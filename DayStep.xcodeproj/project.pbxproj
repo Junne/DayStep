@@ -13,6 +13,9 @@
 		794628D41B98A52500CDC100 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 794628D31B98A52500CDC100 /* Images.xcassets */; };
 		794628D71B98A52500CDC100 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 794628D51B98A52500CDC100 /* LaunchScreen.xib */; };
 		794628E31B98A52500CDC100 /* DayStepTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794628E21B98A52500CDC100 /* DayStepTests.swift */; };
+		794629131B99B62E00CDC100 /* HealthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794629121B99B62E00CDC100 /* HealthManager.swift */; };
+		794629151B9B389300CDC100 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 794629141B9B389300CDC100 /* HealthKit.framework */; };
+		C1BEF755494B63A6CA302F06 /* Pods_DayStep.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B147B22EAD0203A2E258702A /* Pods_DayStep.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -26,6 +29,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		16F8F7262CEEBC848AC8EBFD /* Pods-DayStep.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DayStep.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DayStep/Pods-DayStep.debug.xcconfig"; sourceTree = "<group>"; };
 		794628C71B98A52400CDC100 /* DayStep.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DayStep.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		794628CB1B98A52500CDC100 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		794628CC1B98A52500CDC100 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -36,6 +40,11 @@
 		794628DC1B98A52500CDC100 /* DayStepTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DayStepTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		794628E11B98A52500CDC100 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		794628E21B98A52500CDC100 /* DayStepTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayStepTests.swift; sourceTree = "<group>"; };
+		794629111B9989AA00CDC100 /* DayStep.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = DayStep.entitlements; sourceTree = "<group>"; };
+		794629121B99B62E00CDC100 /* HealthManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthManager.swift; sourceTree = "<group>"; };
+		794629141B9B389300CDC100 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
+		831920FC9DFA0C738516D41A /* Pods-DayStep.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DayStep.release.xcconfig"; path = "Pods/Target Support Files/Pods-DayStep/Pods-DayStep.release.xcconfig"; sourceTree = "<group>"; };
+		B147B22EAD0203A2E258702A /* Pods_DayStep.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DayStep.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +52,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C1BEF755494B63A6CA302F06 /* Pods_DayStep.framework in Frameworks */,
+				794629151B9B389300CDC100 /* HealthKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -62,6 +73,8 @@
 				794628C91B98A52400CDC100 /* DayStep */,
 				794628DF1B98A52500CDC100 /* DayStepTests */,
 				794628C81B98A52400CDC100 /* Products */,
+				CE79E8534E96927C7ADFC6DB /* Pods */,
+				AD3E15FBB9FCBE39526DD645 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -77,7 +90,10 @@
 		794628C91B98A52400CDC100 /* DayStep */ = {
 			isa = PBXGroup;
 			children = (
+				794629111B9989AA00CDC100 /* DayStep.entitlements */,
+				794628EE1B99566100CDC100 /* Verdors */,
 				794628CC1B98A52500CDC100 /* AppDelegate.swift */,
+				794629121B99B62E00CDC100 /* HealthManager.swift */,
 				794628CE1B98A52500CDC100 /* ViewController.swift */,
 				794628D01B98A52500CDC100 /* Main.storyboard */,
 				794628D31B98A52500CDC100 /* Images.xcassets */,
@@ -112,6 +128,31 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		794628EE1B99566100CDC100 /* Verdors */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Verdors;
+			sourceTree = "<group>";
+		};
+		AD3E15FBB9FCBE39526DD645 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				794629141B9B389300CDC100 /* HealthKit.framework */,
+				B147B22EAD0203A2E258702A /* Pods_DayStep.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CE79E8534E96927C7ADFC6DB /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				16F8F7262CEEBC848AC8EBFD /* Pods-DayStep.debug.xcconfig */,
+				831920FC9DFA0C738516D41A /* Pods-DayStep.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -119,9 +160,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 794628E61B98A52500CDC100 /* Build configuration list for PBXNativeTarget "DayStep" */;
 			buildPhases = (
+				B10EA62B00183B7CD4186BE6 /* Check Pods Manifest.lock */,
 				794628C31B98A52400CDC100 /* Sources */,
 				794628C41B98A52400CDC100 /* Frameworks */,
 				794628C51B98A52400CDC100 /* Resources */,
+				7471B985978F94FEF34F4959 /* Embed Pods Frameworks */,
+				E0005F1496DBD151DB1E65D3 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -161,6 +205,15 @@
 				TargetAttributes = {
 					794628C61B98A52400CDC100 = {
 						CreatedOnToolsVersion = 6.4;
+						DevelopmentTeam = 4LPHNA9H37;
+						SystemCapabilities = {
+							com.apple.HealthKit = {
+								enabled = 1;
+							};
+							com.apple.HomeKit = {
+								enabled = 0;
+							};
+						};
 					};
 					794628DB1B98A52500CDC100 = {
 						CreatedOnToolsVersion = 6.4;
@@ -207,12 +260,61 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		7471B985978F94FEF34F4959 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DayStep/Pods-DayStep-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B10EA62B00183B7CD4186BE6 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		E0005F1496DBD151DB1E65D3 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DayStep/Pods-DayStep-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		794628C31B98A52400CDC100 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				794628CF1B98A52500CDC100 /* ViewController.swift in Sources */,
+				794629131B99B62E00CDC100 /* HealthManager.swift in Sources */,
 				794628CD1B98A52500CDC100 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -340,21 +442,31 @@
 		};
 		794628E71B98A52500CDC100 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 16F8F7262CEEBC848AC8EBFD /* Pods-DayStep.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = DayStep/DayStep.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = DayStep/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
 		794628E81B98A52500CDC100 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 831920FC9DFA0C738516D41A /* Pods-DayStep.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = DayStep/DayStep.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = DayStep/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
@@ -411,6 +523,7 @@
 				794628E81B98A52500CDC100 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		794628E91B98A52500CDC100 /* Build configuration list for PBXNativeTarget "DayStepTests" */ = {
 			isa = XCConfigurationList;
@@ -419,6 +532,7 @@
 				794628EB1B98A52500CDC100 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
