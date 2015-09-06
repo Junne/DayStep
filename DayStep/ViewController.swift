@@ -8,6 +8,8 @@
 
 import UIKit
 import LiquidFloatingActionButton
+import HealthKit
+
 
 class ViewController: UIViewController {
     
@@ -21,9 +23,41 @@ class ViewController: UIViewController {
         self.addChooseButtons()
         self.authorizeHealthKit()
         self.updateProgirleInfo()
+        self.addStepCount()
+        
     }
 
     // MARK: UI and Animation
+    
+    func addStepCount() {
+        
+        let one = 0
+        let onezerozero = 100
+        let numberLabel:UILabel = UILabel(frame: CGRectMake(150, 200, 100, 100))
+        numberLabel.text = "hello world"
+        numberLabel.font = UIFont.boldSystemFontOfSize(30)
+        self.view.addSubview(numberLabel)
+        
+        let animationPeriod:Float = 10;
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH,0), { () -> Void in
+            
+//            for i in 1...100 {
+//                usleep(animationPeriod/100 * 1000000)
+//                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+//                    numberLabel.text = NSString(i)
+//                })
+//            }
+        })
+//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+//            for (int i = 1; i < 101; i ++) {
+//                usleep(animationPeriod/100 * 1000000); // sleep in microseconds
+//                dispatch_async(dispatch_get_main_queue(), ^{
+//                    yourLabel.text = [NSString stringWithFormat:@"%d", i];
+//                    });
+//            }
+//            });
+        
+    }
     func addMyStep() {
         
         let myStep = UIImageView()
@@ -123,9 +157,18 @@ class ViewController: UIViewController {
     }
     
     func updateProgirleInfo() {
-        let profile = healthManager.readProfile()
-        println("age: \(profile.age) blood: \(profile.bloodtype) Sex: \(profile.biologicalsex)")
-        healthManager.readStepCount()
+        
+        let querySampleType = HKSampleType.quantityTypeForIdentifier(HKQuantityTypeIdentifierStepCount)
+        healthManager.readTodayStepCount(querySampleType, completion: { (todayStepCounts, error) -> Void in
+            if error != nil {
+                println("Error read today step counts")
+                return;
+            }
+            println("Get today step counts = \(todayStepCounts)")
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                
+            })
+        })
     }
 
     override func didReceiveMemoryWarning() {

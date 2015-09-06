@@ -48,13 +48,43 @@ class HealthManager: NSObject {
         }
     }
     
+    func readTodayStepCount(sampleType:HKSampleType,completion:((Int!,NSError!) -> Void)!) {
+        
+        let lastMidnight = NSCalendar.currentCalendar().startOfDayForDate(NSDate())
+        let nowDate = NSDate()
+        let predicate = HKQuery.predicateForSamplesWithStartDate(lastMidnight, endDate:nowDate, options: .None)
+        let query = HKSampleQuery(sampleType: sampleType, predicate: predicate, limit: 0, sortDescriptors: nil) { (query, results, error) -> Void in
+            if error != nil {
+                println("There was an error running the query: \(error)")
+                completion(0,error)
+                return;
+            }
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                var todayStepCounts:Double = 0
+                for steps in results as! [HKQuantitySample] {
+                    todayStepCounts += steps.quantity.doubleValueForUnit(HKUnit.countUnit())
+                }
+                let todayStepCountsInt = Int(todayStepCounts)
+                completion(todayStepCountsInt,error)
+                println("Today Step Counts = \(todayStepCountsInt)")
+            })
+        }
+        healthKitStore.executeQuery(query)
+        
+    }
+    
     func readStepCount() {
         
         let endDate = NSDate()
         let startDate = NSCalendar.currentCalendar().dateByAddingUnit(.CalendarUnitMonth, value: -1, toDate: endDate, options: nil)
+        let calendar = NSCalendar.currentCalendar()
+        let preservedComponents: NSCalendarUnit = (.CalendarUnitYear | .CalendarUnitMonth | .CalendarUnitDay)
+        let midnigt:NSDate! = calendar.dateFromComponents(calendar.components(preservedComponents, fromDate: NSDate()))
+        
+        let lastMidnight = NSCalendar.currentCalendar().startOfDayForDate(NSDate())
         
         let weightSampleType = HKSampleType.quantityTypeForIdentifier(HKQuantityTypeIdentifierStepCount)
-        let predicate = HKQuery.predicateForSamplesWithStartDate(startDate, endDate: endDate, options: .None)
+        let predicate = HKQuery.predicateForSamplesWithStartDate(lastMidnight, endDate: endDate, options: .None)
         
         let query = HKSampleQuery(sampleType: weightSampleType, predicate: predicate, limit: 0, sortDescriptors: nil, resultsHandler: {
             (query, results, error) in
@@ -71,6 +101,7 @@ class HealthManager: NSObject {
                     println(dailyAVG)
                     println(steps)
                 }
+                println("Today Step count = \(dailyAVG)")
             }
         })
         
