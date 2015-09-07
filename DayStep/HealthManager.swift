@@ -73,6 +73,48 @@ class HealthManager: NSObject {
         
     }
     
+    func read7DaysStepCounts(completion:(([NSDate: Int]!,NSError!)-> Void)!) {
+        
+        let quantityType = HKObjectType.quantityTypeForIdentifier(HKQuantityTypeIdentifierStepCount)
+        let calendar = NSCalendar.currentCalendar()
+        let now = NSDate()
+        let preservedComponents: NSCalendarUnit = (.CalendarUnitYear | .CalendarUnitMonth | .CalendarUnitDay)
+        let midnight: NSDate! = calendar.dateFromComponents(calendar.components(preservedComponents, fromDate:now))
+        let dailyInterval = NSDateComponents()
+        dailyInterval.day = 1
+        let tomorrow = calendar.dateByAddingUnit(NSCalendarUnit.CalendarUnitYear, value: 1, toDate: midnight, options: nil)
+        let oneMonthAgo = calendar.dateByAddingUnit(NSCalendarUnit.CalendarUnitMonth, value: -1, toDate: midnight, options: nil)
+        let oneWeekAgo = calendar.dateByAddingUnit(NSCalendarUnit.CalendarUnitDay, value: -6, toDate: midnight, options: nil)
+        
+        let predicate = HKQuery.predicateForSamplesWithStartDate(oneWeekAgo, endDate: tomorrow, options: .None)
+        
+        let query = HKStatisticsCollectionQuery(quantityType: quantityType,
+            quantitySamplePredicate: predicate,
+            options: HKStatisticsOptions.CumulativeSum,
+            anchorDate: midnight,
+            intervalComponents: dailyInterval)
+
+            
+        query.initialResultsHandler = { query, results, error -> Void in
+            var data:[NSDate: Int] = [:]
+            if error != nil {
+                println(error)
+            } else {
+                
+                results.enumerateStatisticsFromDate(oneWeekAgo, toDate: midnight) { statistics, stop in
+                    if let quantity = statistics.sumQuantity() {
+                        let date = statistics.startDate
+                        let value = Int(quantity.doubleValueForUnit(HKUnit.countUnit()))
+                        data[date] = value
+                    }
+                }
+            }
+            completion(data,error)
+        }
+        healthKitStore.executeQuery(query)
+        
+    }
+    
     func readStepCount() {
         
         let endDate = NSDate()

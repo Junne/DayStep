@@ -146,7 +146,8 @@ class ViewController: UIViewController {
         healthManager.authorizeHealthKit { (authorized, error) -> Void in
             if authorized {
                 println("HealthKit authorization received.")
-                self.updateProgirleInfo()
+                self.updateTodayStepCountsInfo()
+                self.update7DaysStepCounts()
             } else {
                 println("HealthKit authorization denied!")
                 if error != nil {
@@ -156,7 +157,13 @@ class ViewController: UIViewController {
         }
     }
     
-    func updateProgirleInfo() {
+    func update7DaysStepCounts() {
+        healthManager.read7DaysStepCounts { (datas, error) -> Void in
+            println(datas)
+        }
+    }
+    
+    func updateTodayStepCountsInfo() {
         
         let querySampleType = HKSampleType.quantityTypeForIdentifier(HKQuantityTypeIdentifierStepCount)
         healthManager.readTodayStepCount(querySampleType, completion: { (todayStepCounts, error) -> Void in
