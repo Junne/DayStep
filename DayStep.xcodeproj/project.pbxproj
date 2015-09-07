@@ -91,7 +91,6 @@
 			isa = PBXGroup;
 			children = (
 				794629111B9989AA00CDC100 /* DayStep.entitlements */,
-				794628EE1B99566100CDC100 /* Verdors */,
 				794628CC1B98A52500CDC100 /* AppDelegate.swift */,
 				794629121B99B62E00CDC100 /* HealthManager.swift */,
 				794628CE1B98A52500CDC100 /* ViewController.swift */,
@@ -126,13 +125,6 @@
 				794628E11B98A52500CDC100 /* Info.plist */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		794628EE1B99566100CDC100 /* Verdors */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Verdors;
 			sourceTree = "<group>";
 		};
 		AD3E15FBB9FCBE39526DD645 /* Frameworks */ = {

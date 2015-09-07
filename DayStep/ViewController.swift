@@ -9,6 +9,7 @@
 import UIKit
 import LiquidFloatingActionButton
 import HealthKit
+import pop
 
 
 class ViewController: UIViewController {
@@ -22,42 +23,40 @@ class ViewController: UIViewController {
         self.addLittleCicle()
         self.addChooseButtons()
         self.authorizeHealthKit()
-        self.updateProgirleInfo()
-        self.addStepCount()
         
     }
 
     // MARK: UI and Animation
     
-    func addStepCount() {
-        
-        let one = 0
-        let onezerozero = 100
-        let numberLabel:UILabel = UILabel(frame: CGRectMake(150, 200, 100, 100))
-        numberLabel.text = "hello world"
-        numberLabel.font = UIFont.boldSystemFontOfSize(30)
-        self.view.addSubview(numberLabel)
-        
-        let animationPeriod:Float = 10;
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH,0), { () -> Void in
-            
-//            for i in 1...100 {
-//                usleep(animationPeriod/100 * 1000000)
-//                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-//                    numberLabel.text = NSString(i)
-//                })
-//            }
-        })
-//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-//            for (int i = 1; i < 101; i ++) {
-//                usleep(animationPeriod/100 * 1000000); // sleep in microseconds
-//                dispatch_async(dispatch_get_main_queue(), ^{
-//                    yourLabel.text = [NSString stringWithFormat:@"%d", i];
-//                    });
-//            }
-//            });
-        
-    }
+//    func addStepCount() {
+//        
+//        let one = 0
+//        let onezerozero = 100
+//        let numberLabel:UILabel = UILabel(frame: CGRectMake(150, 200, 100, 100))
+//        numberLabel.text = "hello world"
+//        numberLabel.font = UIFont.boldSystemFontOfSize(30)
+//        self.view.addSubview(numberLabel)
+//        
+//        let animationPeriod:Float = 10;
+//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH,0), { () -> Void in
+//            
+////            for i in 1...100 {
+////                usleep(animationPeriod/100 * 1000000)
+////                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+////                    numberLabel.text = NSString(i)
+////                })
+////            }
+//        })
+////        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+////            for (int i = 1; i < 101; i ++) {
+////                usleep(animationPeriod/100 * 1000000); // sleep in microseconds
+////                dispatch_async(dispatch_get_main_queue(), ^{
+////                    yourLabel.text = [NSString stringWithFormat:@"%d", i];
+////                    });
+////            }
+////            });
+//        
+//    }
     func addMyStep() {
         
         let myStep = UIImageView()
@@ -147,6 +146,7 @@ class ViewController: UIViewController {
         healthManager.authorizeHealthKit { (authorized, error) -> Void in
             if authorized {
                 println("HealthKit authorization received.")
+                self.updateProgirleInfo()
             } else {
                 println("HealthKit authorization denied!")
                 if error != nil {
@@ -166,9 +166,40 @@ class ViewController: UIViewController {
             }
             println("Get today step counts = \(todayStepCounts)")
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                
+                if todayStepCounts > 0 {
+                    self.addNumberLabel(todayStepCounts)
+                }
             })
         })
+    }
+    
+    func addNumberLabel(stepCounts:Int) {
+        
+        let numberLabel:UILabel
+        numberLabel = UILabel(frame: CGRectMake(self.view.bounds.size.width/2 - 100, 200, 200, 100))
+        numberLabel.font = UIFont(name: "Avenir-Book", size: 70)
+        numberLabel.textColor = UIColor(red: 0.46, green: 0.76, blue: 0.78, alpha: 1)
+        numberLabel.textAlignment = .Center
+        let propop:POPAnimatableProperty = POPAnimatableProperty.propertyWithName("numberIncrease") { property in
+            
+            property.writeBlock = { obj, values in
+                let label:UILabel = obj as! UILabel
+                numberLabel.text = String(Int(values[0]))
+            }
+            } as! POPAnimatableProperty
+        
+        let aBasicAnimation:POPBasicAnimation = POPBasicAnimation.linearAnimation()
+        aBasicAnimation.property  = propop
+        aBasicAnimation.fromValue = 0
+        aBasicAnimation.toValue   = stepCounts
+        if stepCounts > 5000 {
+            aBasicAnimation.duration  = 15
+        } else {
+            aBasicAnimation.duration = 8
+        }
+        aBasicAnimation.beginTime = CACurrentMediaTime()
+        numberLabel.pop_addAnimation(aBasicAnimation, forKey: "numberIncrease")
+        self.view.addSubview(numberLabel)
     }
 
     override func didReceiveMemoryWarning() {

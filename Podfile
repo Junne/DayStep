@@ -6,6 +6,7 @@ use_frameworks!
 target 'DayStep' do
 
 pod 'LiquidFloatingActionButton', git: 'https://github.com/yoavlt/LiquidFloatingActionButton.git'
+pod 'pop'
 
 end
 

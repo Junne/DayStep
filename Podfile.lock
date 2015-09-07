@@ -1,8 +1,10 @@
 PODS:
   - LiquidFloatingActionButton (0.1.1)
+  - pop (1.0.7)
 
 DEPENDENCIES:
   - LiquidFloatingActionButton (from `https://github.com/yoavlt/LiquidFloatingActionButton.git`)
+  - pop
 
 EXTERNAL SOURCES:
   LiquidFloatingActionButton:
@@ -15,5 +17,6 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   LiquidFloatingActionButton: dcdae1e59eb07eccbf60c027001a4d6731c345c9
+  pop: 628ffc631644601567ee8bfaaaea493ebd7d0923
 
 COCOAPODS: 0.38.2
