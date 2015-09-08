@@ -1,22 +1,30 @@
 PODS:
   - LiquidFloatingActionButton (0.1.1)
+  - PNChartSwift (0.0.2)
   - pop (1.0.7)
 
 DEPENDENCIES:
   - LiquidFloatingActionButton (from `https://github.com/yoavlt/LiquidFloatingActionButton.git`)
+  - PNChartSwift (from `https://github.com/kevinzhow/PNChart-Swift.git`)
   - pop
 
 EXTERNAL SOURCES:
   LiquidFloatingActionButton:
     :git: https://github.com/yoavlt/LiquidFloatingActionButton.git
+  PNChartSwift:
+    :git: https://github.com/kevinzhow/PNChart-Swift.git
 
 CHECKOUT OPTIONS:
   LiquidFloatingActionButton:
     :commit: 8dbfb13c368529e371b8cde339867bfa789f140e
     :git: https://github.com/yoavlt/LiquidFloatingActionButton.git
+  PNChartSwift:
+    :commit: a3e19df83a647a85efe8bfc0a0bce6b78c7ecf58
+    :git: https://github.com/kevinzhow/PNChart-Swift.git
 
 SPEC CHECKSUMS:
   LiquidFloatingActionButton: dcdae1e59eb07eccbf60c027001a4d6731c345c9
+  PNChartSwift: bcdfbffd65920072463eff42d0dfb46189bf4495
   pop: 628ffc631644601567ee8bfaaaea493ebd7d0923
 
 COCOAPODS: 0.38.2

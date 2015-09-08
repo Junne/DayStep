@@ -7,6 +7,7 @@ target 'DayStep' do
 
 pod 'LiquidFloatingActionButton', git: 'https://github.com/yoavlt/LiquidFloatingActionButton.git'
 pod 'pop'
+pod 'PNChartSwift', git: 'https://github.com/kevinzhow/PNChart-Swift.git'
 
 end
 

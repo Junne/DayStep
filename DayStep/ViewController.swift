@@ -10,6 +10,7 @@ import UIKit
 import LiquidFloatingActionButton
 import HealthKit
 import pop
+import PNChartSwift
 
 
 class ViewController: UIViewController {
@@ -23,40 +24,10 @@ class ViewController: UIViewController {
         self.addLittleCicle()
         self.addChooseButtons()
         self.authorizeHealthKit()
-        
     }
 
     // MARK: UI and Animation
     
-//    func addStepCount() {
-//        
-//        let one = 0
-//        let onezerozero = 100
-//        let numberLabel:UILabel = UILabel(frame: CGRectMake(150, 200, 100, 100))
-//        numberLabel.text = "hello world"
-//        numberLabel.font = UIFont.boldSystemFontOfSize(30)
-//        self.view.addSubview(numberLabel)
-//        
-//        let animationPeriod:Float = 10;
-//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH,0), { () -> Void in
-//            
-////            for i in 1...100 {
-////                usleep(animationPeriod/100 * 1000000)
-////                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-////                    numberLabel.text = NSString(i)
-////                })
-////            }
-//        })
-////        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-////            for (int i = 1; i < 101; i ++) {
-////                usleep(animationPeriod/100 * 1000000); // sleep in microseconds
-////                dispatch_async(dispatch_get_main_queue(), ^{
-////                    yourLabel.text = [NSString stringWithFormat:@"%d", i];
-////                    });
-////            }
-////            });
-//        
-//    }
     func addMyStep() {
         
         let myStep = UIImageView()
@@ -160,6 +131,8 @@ class ViewController: UIViewController {
     func update7DaysStepCounts() {
         healthManager.read7DaysStepCounts { (datas, error) -> Void in
             println(datas)
+            let sevenDaysStep = datas.values
+            println(sevenDaysStep)
         }
     }
     
@@ -226,7 +199,52 @@ extension ViewController:LiquidFloatingActionButtonDataSource,LiquidFloatingActi
     }
     
     func liquidFloatingActionButton(liquidFloatingActionButton: LiquidFloatingActionButton, didSelectItemAtIndex index: Int) {
+        switch(index) {
+        case 2:
+            liquidFloatingActionButton.close()
+        case 1:
+            self.addLineChartView()
+            liquidFloatingActionButton.close()
+        default:
+            liquidFloatingActionButton.close()
+        }
     }
     
+}
+
+extension ViewController: PNChartDelegate {
+    
+    func addLineChartView() {
+        
+        let myLineChartView = LineChartView()
+        myLineChartView.addLineChart()
+        myLineChartView.frame = CGRectMake(30, 200, 320, 200)
+        myLineChartView.lineChart.delegate = self
+        self.view.addSubview(myLineChartView)
+    }
+    
+    func addBarChartView() {
+        let myBarChartView = BarChartView()
+        myBarChartView.addBarChart()
+        myBarChartView.frame = CGRectMake(30, 200, 320, 200)
+        myBarChartView.barChart.delegate = self
+        self.view.addSubview(myBarChartView)
+        
+    }
+    
+    func userClickedOnLineKeyPoint(point: CGPoint, lineIndex: Int, keyPointIndex: Int)
+    {
+        println("Click Key on line \(point.x), \(point.y) line index is \(lineIndex) and point index is \(keyPointIndex)")
+    }
+    
+    func userClickedOnLinePoint(point: CGPoint, lineIndex: Int)
+    {
+        println("Click Key on line \(point.x), \(point.y) line index is \(lineIndex)")
+    }
+    
+    func userClickedOnBarChartIndex(barIndex: Int)
+    {
+        println("Click  on bar \(barIndex)")
+    }
 }
 
