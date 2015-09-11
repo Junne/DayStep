@@ -15,8 +15,14 @@ import PNChartSwift
 
 class ViewController: UIViewController {
     
+    enum ChooseView {
+        case None
+        case LineChart
+        case BarChart
+    }
     var cells: [LiquidFloatingCell] = []
     var floatingActionButton: LiquidFloatingActionButton!
+    var showView = ChooseView.None
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,6 +33,19 @@ class ViewController: UIViewController {
     }
 
     // MARK: UI and Animation
+    
+
+    
+    func changeChartView() {
+        switch(showView) {
+        case .LineChart:
+            self.addLineChartView()
+        case .BarChart:
+            self.addBarChartView()
+        default:
+            break
+        }
+    }
     
     func addMyStep() {
         
@@ -220,16 +239,21 @@ extension ViewController: PNChartDelegate {
         myLineChartView.addLineChart()
         myLineChartView.frame = CGRectMake(30, 200, 320, 200)
         myLineChartView.lineChart.delegate = self
+        showView = ChooseView.BarChart
+        let tapGesture = UITapGestureRecognizer(target: self, action: "changeChartView")
+        self.view.addGestureRecognizer(tapGesture)
         self.view.addSubview(myLineChartView)
+        
     }
     
     func addBarChartView() {
+        
         let myBarChartView = BarChartView()
         myBarChartView.addBarChart()
         myBarChartView.frame = CGRectMake(30, 200, 320, 200)
         myBarChartView.barChart.delegate = self
         self.view.addSubview(myBarChartView)
-        
+        showView = ChooseView.LineChart
     }
     
     func userClickedOnLineKeyPoint(point: CGPoint, lineIndex: Int, keyPointIndex: Int)
