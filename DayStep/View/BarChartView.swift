@@ -12,13 +12,13 @@ import PNChartSwift
 class BarChartView: UIView {
     
     var barChart = PNBarChart(frame: CGRectMake(0, 135.0, 320.0, 200.0))
-    func addBarChart() {
+    func addBarChart(myData:[Int]) {
         
         barChart.backgroundColor = UIColor.clearColor()
         barChart.animationType = .Waterfall
         barChart.labelMarginTop = 5.0
-        barChart.xLabels = ["SEP 1","SEP 2","SEP 3","SEP 4","SEP 5","SEP 6","SEP 7"]
-        barChart.yValues = [1,24,12,18,30,10,21]
+//        barChart.xLabels = ["SEP 1","SEP 2","SEP 3","SEP 4","SEP 5","SEP 6","SEP 7"]
+        barChart.yValues = myData
         barChart.strokeChart()        
         self.addSubview(barChart)
     }

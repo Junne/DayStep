@@ -23,6 +23,10 @@ class ViewController: UIViewController {
     var cells: [LiquidFloatingCell] = []
     var floatingActionButton: LiquidFloatingActionButton!
     var showView = ChooseView.None
+    let myBarChartView = BarChartView()
+    let myLineChartView = LineChartView()
+    var stepDatas:[Int]  = []
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,8 +43,14 @@ class ViewController: UIViewController {
     func changeChartView() {
         switch(showView) {
         case .LineChart:
+            if myBarChartView.isDescendantOfView(self.view) {
+                myBarChartView.removeFromSuperview()
+            }
             self.addLineChartView()
         case .BarChart:
+            if myLineChartView.isDescendantOfView(self.view) {
+                myLineChartView.removeFromSuperview()
+            }
             self.addBarChartView()
         default:
             break
@@ -151,9 +161,23 @@ class ViewController: UIViewController {
         healthManager.read7DaysStepCounts { (datas, error) -> Void in
             println(datas)
             let sevenDaysStep = datas.values
-            println(sevenDaysStep)
+            var dateKeys:[NSDate] = Array(datas.keys)
+            var stepCounts = Array(datas.values)
+//            let dateAdded: NSDate?
+//            let dateSortedArray = dateKeys.sorted({ (one, two) -> Bool in
+//                return ($0.dateAdded?.timeIntervalSinceReferenceDate)! < ($1.dateAdded?.timeIntervalSinceReferenceDate)!
+//            })
+//            var valuesCounts:[Int] = []
+//            for key in dateSortedArray {
+//                let myvalue = datas[key]
+//                valuesCounts.append(myvalue)
+//            }
+            self.stepDatas = stepCounts
+            println(stepCounts)
         }
     }
+    
+
     
     func updateTodayStepCountsInfo() {
         
@@ -235,8 +259,7 @@ extension ViewController: PNChartDelegate {
     
     func addLineChartView() {
         
-        let myLineChartView = LineChartView()
-        myLineChartView.addLineChart()
+        myLineChartView.addLineChart(self.stepDatas)
         myLineChartView.frame = CGRectMake(30, 200, 320, 200)
         myLineChartView.lineChart.delegate = self
         showView = ChooseView.BarChart
@@ -245,11 +268,11 @@ extension ViewController: PNChartDelegate {
         self.view.addSubview(myLineChartView)
         
     }
+
     
     func addBarChartView() {
         
-        let myBarChartView = BarChartView()
-        myBarChartView.addBarChart()
+        myBarChartView.addBarChart(self.stepDatas)
         myBarChartView.frame = CGRectMake(30, 200, 320, 200)
         myBarChartView.barChart.delegate = self
         self.view.addSubview(myBarChartView)
