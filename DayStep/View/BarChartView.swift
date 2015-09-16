@@ -17,9 +17,13 @@ class BarChartView: UIView {
         barChart.backgroundColor = UIColor.clearColor()
         barChart.animationType = .Waterfall
         barChart.labelMarginTop = 5.0
-//        barChart.xLabels = ["SEP 1","SEP 2","SEP 3","SEP 4","SEP 5","SEP 6","SEP 7"]
         barChart.yValues = myData
-        barChart.strokeChart()        
+        barChart.showLabel = true
+        barChart.xLabels = myData.map({
+            (number:Int) -> String in
+            return String(number)
+        })
+        barChart.strokeChart()
         self.addSubview(barChart)
     }
 

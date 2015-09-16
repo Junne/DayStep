@@ -12,12 +12,16 @@ import PNChartSwift
 class LineChartView: UIView {
     internal var lineChart:PNLineChart = PNLineChart(frame: CGRectMake(0, 135.0, 320, 200.0))
     func addLineChart(myData:[Int]) {
-        lineChart.yLabelFormat = "%1.1f"
+        lineChart.yLabelHeight = 30.0
+        lineChart.yLabelNum = 30000.0
+        lineChart.yValueMax = 30000.0
         lineChart.showLabel = true
         lineChart.backgroundColor = UIColor.clearColor()
-        lineChart.xLabels = ["SEP 1","SEP 2","SEP 3","SEP 4","SEP 5","SEP 6","SEP 7"]
+        lineChart.xLabels = myData.map({
+            (number:Int) -> String in
+                    return String(number)
+                })
         lineChart.showCoordinateAxis = true
-        var data01Array: [CGFloat] = [60.1, 160.1, 126.4, 262.2, 186.2, 127.2, 176.2]
         var data01:PNLineChartData = PNLineChartData()
         data01.color = PNGreenColor
         data01.itemCount = myData.count

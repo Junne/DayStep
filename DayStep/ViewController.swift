@@ -191,6 +191,8 @@ class ViewController: UIViewController {
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 if todayStepCounts > 0 {
                     self.addNumberLabel(todayStepCounts)
+                } else {
+                    self.addNumberLabel(0)
                 }
             })
         })
@@ -199,7 +201,7 @@ class ViewController: UIViewController {
     func addNumberLabel(stepCounts:Int) {
         
         let numberLabel:UILabel
-        numberLabel = UILabel(frame: CGRectMake(self.view.bounds.size.width/2 - 100, 200, 200, 100))
+        numberLabel = UILabel(frame: CGRectMake(self.view.bounds.size.width/2 - 100, 150, 200, 100))
         numberLabel.font = UIFont(name: "Avenir-Book", size: 70)
         numberLabel.textColor = UIColor(red: 0.46, green: 0.76, blue: 0.78, alpha: 1)
         numberLabel.textAlignment = .Center
@@ -246,7 +248,9 @@ extension ViewController:LiquidFloatingActionButtonDataSource,LiquidFloatingActi
         case 2:
             liquidFloatingActionButton.close()
         case 1:
-            self.addLineChartView()
+            if self.stepDatas.count > 5 {
+                self.addLineChartView()
+            }
             liquidFloatingActionButton.close()
         default:
             liquidFloatingActionButton.close()
@@ -260,12 +264,21 @@ extension ViewController: PNChartDelegate {
     func addLineChartView() {
         
         myLineChartView.addLineChart(self.stepDatas)
-        myLineChartView.frame = CGRectMake(30, 200, 320, 200)
+        myLineChartView.frame = CGRectMake((self.view.bounds.width - 320) / 2, 200, 320, 200)
         myLineChartView.lineChart.delegate = self
         showView = ChooseView.BarChart
         let tapGesture = UITapGestureRecognizer(target: self, action: "changeChartView")
+        tapGesture.view?.frame = CGRectMake(30, 200, 320, 200)
         self.view.addGestureRecognizer(tapGesture)
         self.view.addSubview(myLineChartView)
+        
+        let aWeekLabel:UILabel
+        aWeekLabel = UILabel(frame: CGRectMake(self.view.bounds.size.width/2 - 150, self.view.bounds.height - 150, 300, 100))
+        aWeekLabel.font = UIFont(name: "Avenir-Book", size: 70)
+        aWeekLabel.textColor = UIColor(red: 0.46, green: 0.76, blue: 0.78, alpha: 1)
+        aWeekLabel.textAlignment = .Center
+        aWeekLabel.text = "Week"
+        self.view.addSubview(aWeekLabel)
         
     }
 
@@ -273,7 +286,7 @@ extension ViewController: PNChartDelegate {
     func addBarChartView() {
         
         myBarChartView.addBarChart(self.stepDatas)
-        myBarChartView.frame = CGRectMake(30, 200, 320, 200)
+        myBarChartView.frame = CGRectMake((self.view.bounds.width - 320) / 2, 200, 320, 200)
         myBarChartView.barChart.delegate = self
         self.view.addSubview(myBarChartView)
         showView = ChooseView.LineChart
