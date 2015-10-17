@@ -65,16 +65,16 @@ class ViewController: UIViewController {
         myStep.alpha = 0
         self.view.addSubview(myStep)
         
-        UIView.animateWithDuration(6, delay: 0, usingSpringWithDamping: 4, initialSpringVelocity: 2, options: nil, animations: { () -> Void in
+        UIView.animateWithDuration(6, delay: 0, usingSpringWithDamping: 4, initialSpringVelocity: 2, options: [], animations: { () -> Void in
             myStep.alpha = 1
             myStep.frame = CGRectMake(self.view.bounds.width - 70, self.view.bounds.height - 70, 34, 34)
         }, completion: nil)
         
-        UIView.animateWithDuration(0.5, delay: 6, usingSpringWithDamping: 1, initialSpringVelocity: 2, options: nil, animations: { () -> Void in
+        UIView.animateWithDuration(0.5, delay: 6, usingSpringWithDamping: 1, initialSpringVelocity: 2, options: [], animations: { () -> Void in
             myStep.frame.size = CGSizeMake(54, 54)
         }, completion: nil)
         
-        UIView.animateWithDuration(0.5, delay: 6.5, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.6, options: nil, animations: { () -> Void in
+        UIView.animateWithDuration(0.5, delay: 6.5, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.6, options: [], animations: { () -> Void in
             myStep.frame.size = CGSizeMake(34, 34)
         }, completion: nil)
         
@@ -134,7 +134,6 @@ class ViewController: UIViewController {
             bottomRightButton.alpha = 1
         }, completion: nil)
         
-        
     }
     
     //MARK: read step count
@@ -145,13 +144,13 @@ class ViewController: UIViewController {
         
         healthManager.authorizeHealthKit { (authorized, error) -> Void in
             if authorized {
-                println("HealthKit authorization received.")
+                print("HealthKit authorization received.")
                 self.updateTodayStepCountsInfo()
                 self.update7DaysStepCounts()
             } else {
-                println("HealthKit authorization denied!")
+                print("HealthKit authorization denied!")
                 if error != nil {
-                    println("\(error)")
+                    print("\(error)")
                 }
             }
         }
@@ -159,10 +158,10 @@ class ViewController: UIViewController {
     
     func update7DaysStepCounts() {
         healthManager.read7DaysStepCounts { (datas, error) -> Void in
-            println(datas)
+            print(datas)
             let sevenDaysStep = datas.values
             var dateKeys:[NSDate] = Array(datas.keys)
-            var stepCounts = Array(datas.values)
+            let stepCounts = Array(datas.values)
 //            let dateAdded: NSDate?
 //            let dateSortedArray = dateKeys.sorted({ (one, two) -> Bool in
 //                return ($0.dateAdded?.timeIntervalSinceReferenceDate)! < ($1.dateAdded?.timeIntervalSinceReferenceDate)!
@@ -173,7 +172,7 @@ class ViewController: UIViewController {
 //                valuesCounts.append(myvalue)
 //            }
             self.stepDatas = stepCounts
-            println(stepCounts)
+            print(stepCounts)
         }
     }
     
@@ -182,12 +181,12 @@ class ViewController: UIViewController {
     func updateTodayStepCountsInfo() {
         
         let querySampleType = HKSampleType.quantityTypeForIdentifier(HKQuantityTypeIdentifierStepCount)
-        healthManager.readTodayStepCount(querySampleType, completion: { (todayStepCounts, error) -> Void in
+        healthManager.readTodayStepCount(querySampleType!, completion: { (todayStepCounts, error) -> Void in
             if error != nil {
-                println("Error read today step counts")
+                print("Error read today step counts")
                 return;
             }
-            println("Get today step counts = \(todayStepCounts)")
+            print("Get today step counts = \(todayStepCounts)")
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 if todayStepCounts > 0 {
                     self.addNumberLabel(todayStepCounts)
@@ -294,17 +293,17 @@ extension ViewController: PNChartDelegate {
     
     func userClickedOnLineKeyPoint(point: CGPoint, lineIndex: Int, keyPointIndex: Int)
     {
-        println("Click Key on line \(point.x), \(point.y) line index is \(lineIndex) and point index is \(keyPointIndex)")
+        print("Click Key on line \(point.x), \(point.y) line index is \(lineIndex) and point index is \(keyPointIndex)")
     }
     
     func userClickedOnLinePoint(point: CGPoint, lineIndex: Int)
     {
-        println("Click Key on line \(point.x), \(point.y) line index is \(lineIndex)")
+        print("Click Key on line \(point.x), \(point.y) line index is \(lineIndex)")
     }
     
     func userClickedOnBarChartIndex(barIndex: Int)
     {
-        println("Click  on bar \(barIndex)")
+        print("Click  on bar \(barIndex)")
     }
 }
 

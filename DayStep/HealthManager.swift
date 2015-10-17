@@ -55,7 +55,7 @@ class HealthManager: NSObject {
         let predicate = HKQuery.predicateForSamplesWithStartDate(lastMidnight, endDate:nowDate, options: .None)
         let query = HKSampleQuery(sampleType: sampleType, predicate: predicate, limit: 0, sortDescriptors: nil) { (query, results, error) -> Void in
             if error != nil {
-                println("There was an error running the query: \(error)")
+                print("There was an error running the query: \(error)")
                 completion(0,error)
                 return;
             }
@@ -66,7 +66,7 @@ class HealthManager: NSObject {
                 }
                 let todayStepCountsInt = Int(todayStepCounts)
                 completion(todayStepCountsInt,error)
-                println("Today Step Counts = \(todayStepCountsInt)")
+                print("Today Step Counts = \(todayStepCountsInt)")
             })
         }
         healthKitStore.executeQuery(query)
@@ -78,17 +78,17 @@ class HealthManager: NSObject {
         let quantityType = HKObjectType.quantityTypeForIdentifier(HKQuantityTypeIdentifierStepCount)
         let calendar = NSCalendar.currentCalendar()
         let now = NSDate()
-        let preservedComponents: NSCalendarUnit = (.CalendarUnitYear | .CalendarUnitMonth | .CalendarUnitDay)
+        let preservedComponents: NSCalendarUnit = ([.Year, .Month, .Day])
         let midnight: NSDate! = calendar.dateFromComponents(calendar.components(preservedComponents, fromDate:now))
         let dailyInterval = NSDateComponents()
         dailyInterval.day = 1
-        let tomorrow = calendar.dateByAddingUnit(NSCalendarUnit.CalendarUnitYear, value: 1, toDate: midnight, options: nil)
-        let oneMonthAgo = calendar.dateByAddingUnit(NSCalendarUnit.CalendarUnitMonth, value: -1, toDate: midnight, options: nil)
-        let oneWeekAgo = calendar.dateByAddingUnit(NSCalendarUnit.CalendarUnitDay, value: -6, toDate: midnight, options: nil)
+        let tomorrow = calendar.dateByAddingUnit(NSCalendarUnit.Year, value: 1, toDate: midnight, options: [])
+        let oneMonthAgo = calendar.dateByAddingUnit(NSCalendarUnit.Month, value: -1, toDate: midnight, options: [])
+        let oneWeekAgo = calendar.dateByAddingUnit(NSCalendarUnit.Day, value: -6, toDate: midnight, options: [])
         
         let predicate = HKQuery.predicateForSamplesWithStartDate(oneWeekAgo, endDate: tomorrow, options: .None)
         
-        let query = HKStatisticsCollectionQuery(quantityType: quantityType,
+        let query = HKStatisticsCollectionQuery(quantityType: quantityType!,
             quantitySamplePredicate: predicate,
             options: HKStatisticsOptions.CumulativeSum,
             anchorDate: midnight,
@@ -98,10 +98,10 @@ class HealthManager: NSObject {
         query.initialResultsHandler = { query, results, error -> Void in
             var data:[NSDate: Int] = [:]
             if error != nil {
-                println(error)
+                print(error)
             } else {
                 
-                results.enumerateStatisticsFromDate(oneWeekAgo, toDate: midnight) { statistics, stop in
+                results!.enumerateStatisticsFromDate(oneWeekAgo, toDate: midnight) { statistics, stop in
                     if let quantity = statistics.sumQuantity() {
                         let date = statistics.startDate
                         let value = Int(quantity.doubleValueForUnit(HKUnit.countUnit()))
@@ -118,9 +118,9 @@ class HealthManager: NSObject {
     func readStepCount() {
         
         let endDate = NSDate()
-        let startDate = NSCalendar.currentCalendar().dateByAddingUnit(.CalendarUnitMonth, value: -1, toDate: endDate, options: nil)
+        let startDate = NSCalendar.currentCalendar().dateByAddingUnit(.Month, value: -1, toDate: endDate, options: [])
         let calendar = NSCalendar.currentCalendar()
-        let preservedComponents: NSCalendarUnit = (.CalendarUnitYear | .CalendarUnitMonth | .CalendarUnitDay)
+        let preservedComponents: NSCalendarUnit = ([.Year, .Month, .Day])
         let midnigt:NSDate! = calendar.dateFromComponents(calendar.components(preservedComponents, fromDate: NSDate()))
         
         let lastMidnight = NSCalendar.currentCalendar().startOfDayForDate(NSDate())
@@ -128,10 +128,10 @@ class HealthManager: NSObject {
         let weightSampleType = HKSampleType.quantityTypeForIdentifier(HKQuantityTypeIdentifierStepCount)
         let predicate = HKQuery.predicateForSamplesWithStartDate(lastMidnight, endDate: endDate, options: .None)
         
-        let query = HKSampleQuery(sampleType: weightSampleType, predicate: predicate, limit: 0, sortDescriptors: nil, resultsHandler: {
+        let query = HKSampleQuery(sampleType: weightSampleType!, predicate: predicate, limit: 0, sortDescriptors: nil, resultsHandler: {
             (query, results, error) in
             if results == nil {
-                println("There was an error running the query: \(error)")
+                print("There was an error running the query: \(error)")
             }
             
             dispatch_async(dispatch_get_main_queue()) {
@@ -140,10 +140,10 @@ class HealthManager: NSObject {
                 {
                     // add values to dailyAVG
                     dailyAVG += steps.quantity.doubleValueForUnit(HKUnit.countUnit())
-                    println(dailyAVG)
-                    println(steps)
+                    print(dailyAVG)
+                    print(steps)
                 }
-                println("Today Step count = \(dailyAVG)")
+                print("Today Step count = \(dailyAVG)")
             }
         })
         
@@ -170,25 +170,40 @@ class HealthManager: NSObject {
         var error:NSError?
         var age:Int?
         
-        if let birthDay = healthKitStore.dateOfBirthWithError(&error) {
+        do {
+            let birthDay = try healthKitStore.dateOfBirthWithError()
             let today = NSDate()
             let calendar = NSCalendar.currentCalendar()
-            let differenceComponents = NSCalendar.currentCalendar().components(.CalendarUnitYear, fromDate: birthDay, toDate: today, options: NSCalendarOptions(0))
+            let differenceComponents = NSCalendar.currentCalendar().components(.Year, fromDate: birthDay, toDate: today, options: NSCalendarOptions(0))
             age = differenceComponents.year
+        } catch var error1 as NSError {
+            error = error1
         }
         if error != nil {
-            println("Error reading Birthday: \(error)")
+            print("Error reading Birthday: \(error)")
         }
         
-        var biologicalSex:HKBiologicalSexObject? = healthKitStore.biologicalSexWithError(&error)
+        var biologicalSex:HKBiologicalSexObject?
+        do {
+            biologicalSex = try healthKitStore.biologicalSexWithError()
+        } catch var error1 as NSError {
+            error = error1
+            biologicalSex = nil
+        }
         if error != nil {
-            println("Error reading Biological Sex:\(error)")
+            print("Error reading Biological Sex:\(error)")
         }
         
-        var bloodType:HKBloodTypeObject? = healthKitStore.bloodTypeWithError(&error)
+        var bloodType:HKBloodTypeObject?
+        do {
+            bloodType = try healthKitStore.bloodTypeWithError()
+        } catch var error1 as NSError {
+            error = error1
+            bloodType = nil
+        }
         if error != nil {
             
-            println("Error reading Blood Type: \(error)")
+            print("Error reading Blood Type: \(error)")
         }
         return(age, biologicalSex, bloodType)
     }

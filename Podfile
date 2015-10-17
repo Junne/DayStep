@@ -5,7 +5,7 @@ use_frameworks!
 
 target 'DayStep' do
 
-pod 'LiquidFloatingActionButton', git: 'https://github.com/yoavlt/LiquidFloatingActionButton.git'
+pod 'LiquidFloatingActionButton', git: 'https://github.com/yoavlt/LiquidFloatingActionButton.git', branch: 'swift-2.0'
 pod 'pop'
 pod 'PNChartSwift', git: 'https://github.com/kevinzhow/PNChart-Swift.git'
 
